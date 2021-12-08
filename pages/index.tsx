@@ -46,17 +46,11 @@ const PlayerForm = (props:PlayerFormProps) => {
 }
 const Home: NextPage = () => {
   const router = useRouter();
-  console.log(router)
   const baseRaw = Array.isArray(router.query.base) ? router.query.base[0] : router.query.base; 
   const base = parseFloat(baseRaw || '12')
   const freq0 = parseFloat(Array.isArray(router.query.freq0) ? router.query.freq0[0] : router.query.freq0 || '27.5');
   const lowNote = parseInt(Array.isArray(router.query.lowNote) ? router.query.lowNote[0] : router.query.lowNote || '20', base);
   const shape = (Array.isArray(router.query.shape) ? router.query.shape[0] : router.query.shape || 'triangle') as OscillatorType;
-  console.log({base, baseRaw, freq0, lowNote, shape})
-  const keyBoardLetters = "azsxdcfvgbhnjmk,l.;/1q2w3e4r5t6y7u8i9o0p-[=".split('');
-  console.log(keyBoardLetters)
-  const keys = keyBoardLetters.map((letter, i) => <Key key ={i} note={lowNote+i} keyboardKey={letter} />);
-  if (!router.isReady) return (<div><main><h1></h1></main></div>)
   return (
     <div className={styles.container}>
       <Head>
@@ -70,22 +64,7 @@ const Home: NextPage = () => {
           Welcome to metric Music b
         </h1>
         <PlayerForm {...{lowNote, base, freq0, shape}} />
-        <PlayerContext.Provider value = {mm(audioCtx())(freq0, base, shape)}>
-          <Player>
-              <section className = 'flex -ml-8 -mr16' >
-                {keys.filter((v, i) => i>=20 && i%2===0)}
-              </section>
-              <section className = 'flex -ml-4 -mr8' >
-                {keys.filter((v, i) => i>=20 && i%2===1)}
-              </section>
-              <section className = 'flex mt-4' >
-                {keys.filter((v, i) => i<20 && i%2===0)}
-              </section>
-              <section className = 'flex ml-4 -mr8' >
-                {keys.filter((v, i) => i<20 && i%2===1)}
-              </section>
-          </Player>
-        </PlayerContext.Provider>
+        {!router.query.freq0 ? <></> : <Player {...{lowNote, freq0, base, shape}} /> }
       </main>
 
       <footer className={styles.footer}>

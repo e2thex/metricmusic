@@ -1,5 +1,6 @@
 import { Children, ComponentType, createContext, useContext, useEffect, useRef, useState } from "react";
-import { usePlayer } from "./metricmusic"
+import audioCtx from 'audio-context';
+import mm, { PlayerContext, usePlayer } from "./metricmusic"
 
 type Props = {
   keyboardKey:string,
@@ -15,17 +16,40 @@ type KeyBoardContextFunc = (p:KeyBoardKeyPresser) => void;
 const KeyboardContext = createContext((p:KeyBoardKeyPresser) => {});
 
 const KeyboardContextValue = createContext([] as KeyBoardKeyPresser[]);
-
-const Player = (props:HTMLDivElement | {children: JSX.Element | JSX.Element[]}) => {
+type PlayerProps = {
+  lowNote:number,
+  freq0:number,
+  base:number,
+  shape:OscillatorType,
+}
+const Player = (props: PlayerProps) => {
+  const { lowNote, freq0, base, shape } = props;
   const [pressers, setPressers] = useState(new Map() as KeyBoardKeyPresserMap);
+  const keyBoardLetters = "azsxdcfvgbhnjmk,l.;/1q2w3e4r5t6y7u8i9o0p-[=".split('');
+  const keys = keyBoardLetters.map((letter, i) => <Key key ={i} note={lowNote+i} keyboardKey={letter} />);
   
   return (
     <KeyboardContext.Provider value ={(p:KeyBoardKeyPresser) => pressers.set(p.letter, p)}>
+      <PlayerContext.Provider value = {mm(audioCtx())(freq0, base, shape)}>
         <div
           tabIndex={-1} 
           onKeyDown={e => pressers.get(e.key)?.keyDown()}
           onKeyUp={e => pressers.get(e.key)?.keyUp()}
-        >{props.children}</div>
+        >
+          <section className = 'flex -ml-8 -mr16' >
+            {keys.filter((v, i) => i>=20 && i%2===0)}
+          </section>
+          <section className = 'flex -ml-4 -mr8' >
+            {keys.filter((v, i) => i>=20 && i%2===1)}
+          </section>
+          <section className = 'flex mt-4' >
+            {keys.filter((v, i) => i<20 && i%2===0)}
+          </section>
+          <section className = 'flex ml-4 -mr8' >
+            {keys.filter((v, i) => i<20 && i%2===1)}
+          </section>
+        </div>
+      </PlayerContext.Provider>
     </KeyboardContext.Provider>
   )
 }
@@ -77,7 +101,7 @@ const Key = (props:Props) => {
       onMouseDown={keyDown}
       onMouseUp={keyUp}
     >
-      <span className="text-xl">{note.toString(player.base)}</span><span className="text-xs absolute bottom-0 right-0">{keyboardKey}</span>
+      <span className="text-xl">{(note || 1).toString(player.base)}</span><span className="text-xs absolute bottom-0 right-0">{keyboardKey}</span>
     </div>
   )
 }
