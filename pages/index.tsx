@@ -18,10 +18,10 @@ type PlayerFormProps = {
 const PlayerForm = (props:PlayerFormProps) => {
   const {base, freq0, lowNote, shape} = props;
   console.log(props);
-  const [lBase, setLBase] = useState(null);
-  const [lFreq0, setLFreq0] = useState(null);
-  const [lLowNote, setLLowNote] = useState(null);
-  const [lShape, setLShape] = useState(null);
+  const [lBase, setLBase] = useState(null as null|string);
+  const [lFreq0, setLFreq0] = useState(null as null|string);
+  const [lLowNote, setLLowNote] = useState(null as null|string);
+  const [lShape, setLShape] = useState(null as null| string);
   const onSubmit = (e:FormEvent<HTMLFormElement>)=> {
     e.preventDefault();
     window.location.replace(`?base=${lBase||base}&freq0=${lFreq0||freq0}&shape=${lShape||shape}&lowNote=${lLowNote||lowNote}`)
