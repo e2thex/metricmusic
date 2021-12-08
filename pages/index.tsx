@@ -72,18 +72,18 @@ const Home: NextPage = () => {
         <PlayerForm {...{lowNote, base, freq0, shape}} />
         <PlayerContext.Provider value = {mm(audioCtx())(freq0, base, shape)}>
           <Player>
-            <section className = 'flex -ml-8 -mr16' >
-              {keys.filter((v, i) => i>=20 && i%2===0)}
-            </section>
-            <section className = 'flex -ml-4 -mr8' >
-              {keys.filter((v, i) => i>=20 && i%2===1)}
-            </section>
-            <section className = 'flex mt-4' >
-              {keys.filter((v, i) => i<20 && i%2===0)}
-            </section>
-            <section className = 'flex ml-4 -mr8' >
-              {keys.filter((v, i) => i<20 && i%2===1)}
-            </section>
+              <section className = 'flex -ml-8 -mr16' >
+                {keys.filter((v, i) => i>=20 && i%2===0)}
+              </section>
+              <section className = 'flex -ml-4 -mr8' >
+                {keys.filter((v, i) => i>=20 && i%2===1)}
+              </section>
+              <section className = 'flex mt-4' >
+                {keys.filter((v, i) => i<20 && i%2===0)}
+              </section>
+              <section className = 'flex ml-4 -mr8' >
+                {keys.filter((v, i) => i<20 && i%2===1)}
+              </section>
           </Player>
         </PlayerContext.Provider>
       </main>

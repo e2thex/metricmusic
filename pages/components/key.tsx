@@ -1,4 +1,4 @@
-import { ComponentType, createContext, useContext, useEffect, useRef, useState } from "react";
+import { Children, ComponentType, createContext, useContext, useEffect, useRef, useState } from "react";
 import { usePlayer } from "./metricmusic"
 
 type Props = {
@@ -16,16 +16,16 @@ const KeyboardContext = createContext((p:KeyBoardKeyPresser) => {});
 
 const KeyboardContextValue = createContext([] as KeyBoardKeyPresser[]);
 
-const Player = (props:HTMLDivElement) => {
+const Player = (props:HTMLDivElement | {children: JSX.Element | JSX.Element[]}) => {
   const [pressers, setPressers] = useState(new Map() as KeyBoardKeyPresserMap);
   
   return (
     <KeyboardContext.Provider value ={(p:KeyBoardKeyPresser) => pressers.set(p.letter, p)}>
-        <div {...props} 
+        <div
           tabIndex={-1} 
           onKeyDown={e => pressers.get(e.key)?.keyDown()}
           onKeyUp={e => pressers.get(e.key)?.keyUp()}
-        ></div>
+        >{props.children}</div>
     </KeyboardContext.Provider>
   )
 }
@@ -40,12 +40,12 @@ const Key = (props:Props) => {
     tone = player(note);
     tone?.start();
     //console.log(ref);
-    ref.current?.classList.add('shadow-inner')
+    //ref.current.classList.add('shadow-inner')
   }
   const keyUp = () => {
     tone?.stop();
     tone = undefined;
-    ref.current?.classList.remove('shadow-inner')
+    //ref.current?.classList.remove('shadow-inner')
   }
   useContext(KeyboardContext)({
     keyDown,
