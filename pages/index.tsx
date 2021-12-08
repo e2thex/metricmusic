@@ -18,13 +18,13 @@ type PlayerFormProps = {
 const PlayerForm = (props:PlayerFormProps) => {
   const {base, freq0, lowNote, shape} = props;
   console.log(props);
-  const [lBase, setLBase] = useState(base.toString());
-  const [lFreq0, setLFreq0] = useState(freq0.toString());
-  const [lLowNote, setLLowNote] = useState(lowNote.toString(base));
-  const [lShape, setLShape] = useState(shape);
+  const [lBase, setLBase] = useState(null);
+  const [lFreq0, setLFreq0] = useState(null);
+  const [lLowNote, setLLowNote] = useState(null);
+  const [lShape, setLShape] = useState(null);
   const onSubmit = (e:FormEvent<HTMLFormElement>)=> {
     e.preventDefault();
-    window.location.replace(`?base=${lBase}&freq0=${lFreq0}&shape=${lShape}&lowNote=${lLowNote}`)
+    window.location.replace(`?base=${lBase||base}&freq0=${lFreq0||freq0}&shape=${lShape||shape}&lowNote=${lLowNote||lowNote}`)
   }
   return (
     <form onSubmit={onSubmit }>

@@ -59,17 +59,19 @@ const Key = (props:Props) => {
   //console.log(player.base);
   let tone = undefined as OscillatorNode | undefined;
   const ref = useRef(null);
+  const refmock = {classList:{ remove: (t:string) => {}, add: (t:string) => {}}};
   const keyDown = () => {
     if (tone) return;
     tone = player(note);
     tone?.start();
-    //console.log(ref);
-    //ref.current.classList.add('shadow-inner')
+    (ref.current || refmock).classList.add('shadow-inner');
+    (ref.current || refmock).classList.add('text-gray-500');
   }
   const keyUp = () => {
     tone?.stop();
     tone = undefined;
-    //ref.current?.classList.remove('shadow-inner')
+    (ref.current || refmock).classList.remove('shadow-inner');
+    (ref.current || refmock).classList.remove('text-gray-500');
   }
   useContext(KeyboardContext)({
     keyDown,
