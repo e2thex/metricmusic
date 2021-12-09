@@ -1,6 +1,6 @@
 import { Children, ComponentType, createContext, useContext, useEffect, useRef, useState } from "react";
 import audioCtx from 'audio-context';
-import mm, { PlayerContext, usePlayer } from "./metricmusic"
+import mm, { MMTypes, PlayerContext, usePlayer } from "./metricmusic"
 
 type Props = {
   keyboardKey:string,
@@ -20,7 +20,7 @@ type PlayerProps = {
   lowNote:number,
   freq0:number,
   base:number,
-  shape:OscillatorType,
+  shape:MMTypes,
 }
 const Player = (props: PlayerProps) => {
   const { lowNote, freq0, base, shape } = props;
