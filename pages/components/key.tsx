@@ -8,7 +8,7 @@ type Props = {
 }
 type KeyBoardKeyPresser = {
   letter: string,
-  keyDown:() => void,
+  keyDown:(e?:Event) => void,
   keyUp:() => void,
 }
 type KeyBoardKeyPresserMap = Map<string, KeyBoardKeyPresser>;
@@ -31,7 +31,7 @@ const Player = (props: PlayerProps) => {
   return (
     <KeyboardContext.Provider value ={(p:KeyBoardKeyPresser) => pressers.set(p.letter, p)}>
       <PlayerContext.Provider value = {mm(audioCtx())(freq0, base, shape)}>
-        <div
+        <div className="w-full"
           tabIndex={-1} 
           onKeyDown={e => pressers.get(e.key)?.keyDown()}
           onKeyUp={e => pressers.get(e.key)?.keyUp()}
@@ -60,12 +60,19 @@ const Key = (props:Props) => {
   let tone = undefined as OscillatorNode | undefined;
   const ref = useRef(null);
   const refmock = {classList:{ remove: (t:string) => {}, add: (t:string) => {}}};
-  const keyDown = () => {
+  type KeyDownEvent = {
+    preventDefault: () => void,
+    stopPropagation: () => void,
+  }
+  const keyDown = (e?:KeyDownEvent) => {
     if (tone) return;
     tone = player(note);
     tone?.start();
+    if(e) e.preventDefault();
+    if (e) e.stopPropagation();
     (ref.current || refmock).classList.add('shadow-inner');
     (ref.current || refmock).classList.add('text-gray-500');
+    return false;
   }
   const keyUp = () => {
     tone?.stop();
@@ -99,9 +106,13 @@ const Key = (props:Props) => {
     <div
       ref={ref}
       id = {keyboardKey}
-      className = {`border w-16 h-16 text-center ring-grey shadow-lg m-1 relative leading-16`}
-      onMouseDown={keyDown}
+      className = {`touch-none select-none border w-1/12 basis-1/12 h-16 text-center ring-grey shadow-lg m-1 relative leading-16`}
+      onTouchStart={keyDown}
+      onTouchEnd={keyDown}
+      onTouchCancel={keyUp}
+      onTouchMove={keyUp}
       onMouseUp={keyUp}
+      onMouseDown={keyDown}
     >
       <span className="text-xl">{(note || 1).toString(player.base)}</span><span className="text-xs absolute bottom-0 right-0">{keyboardKey}</span>
     </div>
