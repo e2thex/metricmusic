@@ -16,21 +16,20 @@ type PlayerFormProps = {
   shape: MMTypes
 }
 // eslint-disable-next-line react/display-name
-const TypeOption = (props:{type:MMTypes, shape:MMTypes}) => {
+const TypeOption = (props:{type:MMTypes, shape?:MMTypes}) => {
   const {shape, type} = props;
-  console.log(props);
-  return <option defaultChecked={shape===type}>{type}</option>
+  return <option>{type}</option>
 }
 const PlayerForm = (props:PlayerFormProps) => {
   const {base, freq0, lowNote, shape} = props;
-  console.log(props);
   const [lBase, setLBase] = useState(null as null|string);
   const [lFreq0, setLFreq0] = useState(null as null|string);
   const [lLowNote, setLLowNote] = useState(null as null|string);
   const [lShape, setLShape] = useState(null as null| string);
+  const router = useRouter();
   const onSubmit = (e:FormEvent<HTMLFormElement>)=> {
     e.preventDefault();
-    window.location.replace(`?base=${lBase||base}&freq0=${lFreq0||freq0}&shape=${lShape||shape}&lowNote=${lLowNote||lowNote}`)
+    window.location.replace(`?base=${lBase||base}&freq0=${lFreq0||freq0}&shape=${lShape||shape}&lowNote=${lLowNote||(lowNote.toString(base))}`)
   }
   const types = ['sine' , 'square' , 'square2' , 'sawtooth' , 'triangle' , 'triangle2' , 'chiptune' , 'organ' , 'organ2' , 'organ3' , 'organ4' , 'organ5' , 'bass' ,'bass2' , 'bass3' , 'bass4' , 'brass' , 'brass2' , 'aah' , 'ooh' , 'eeh' , 'buzz' , 'buzz2' , 'dissonance'] as MMTypes[];
   return (
@@ -42,8 +41,8 @@ const PlayerForm = (props:PlayerFormProps) => {
       <label className="p-3 text-lg" htmlFor="lowNote">Lowest Note</label>
       <input className="p-3 text-lg border border-gray-700 w-16"  id="lowNote" defaultValue={lowNote.toString(base)} onChange={e=> setLLowNote(e.target.value)}></input>
       <label className="p-3 text-lg" htmlFor="shape">shape</label>
-      <select className="p-3 text-lg border border-gray-700 w-32"  id="shape" defaultValue={shape} onChange={e=>setLShape(e.target.value as OscillatorType)}>
-        {types.map(t => <TypeOption key={t} shape={shape} type={t} />)}
+      <select className="p-3 text-lg border border-gray-700 w-32"  id="shape" defaultValue={shape} onChange={e=>setLShape(e.target.value as MMTypes)}>
+        {types.map(t => <TypeOption key={t} type={t} />)}
       </select>
       <input className="p-3 text-lg border border-gray-700 bg-gray-700 text-white" type="submit" value="Update"/>
     </form>
@@ -51,22 +50,38 @@ const PlayerForm = (props:PlayerFormProps) => {
 }
 const Home: NextPage = () => {
   const router = useRouter();
-  const baseRaw = Array.isArray(router.query.base) ? router.query.base[0] : router.query.base; 
-  const base = parseFloat(baseRaw || '12')
-  const freq0 = parseFloat(Array.isArray(router.query.freq0) ? router.query.freq0[0] : router.query.freq0 || '27.5');
-  const lowNote = parseInt(Array.isArray(router.query.lowNote) ? router.query.lowNote[0] : router.query.lowNote || '20', base);
-  const shape = (Array.isArray(router.query.shape) ? router.query.shape[0] : router.query.shape || 'triangle') as MMTypes;
+  const [base, setBase] = useState(12);
+  if (router.query.base) {
+    const protentalBase = parseFloat(Array.isArray(router.query.base) ? router.query.base[0] : router.query.base)
+    if(protentalBase!= base) setBase(protentalBase)
+  }
+  const [freq0, setFreq0] = useState(27.5);
+  if (router.query.freq0) {
+    const protentalFreq0 = parseFloat(Array.isArray(router.query.freq0) ? router.query.freq0[0] : router.query.freq0)
+    if(protentalFreq0!= freq0) setFreq0(protentalFreq0)
+  }
+  const [lowNote, setLowNote] = useState(20);
+  if (router.query.lowNote) {
+    const protentalLowNote = parseInt(Array.isArray(router.query.lowNote) ? router.query.lowNote[0] : router.query.lowNote, base)
+    if(protentalLowNote!= lowNote) setLowNote(protentalLowNote)
+    console.log({lowNote});
+  }
+  const [shape, setShape] = useState('organ' as MMTypes);
+  if (router.query.shape) {
+    const protentalShape = (Array.isArray(router.query.shape) ? router.query.shape[0] : router.query.shape) as MMTypes;
+    if(protentalShape!= shape) setShape(protentalShape)
+  }
   return (
     <div className={styles.container}>
       <Head>
         <title>Metric Music</title>
         <meta name="description" content="Play music where the octive is broken up in any base." />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicona.ico" />
       </Head>
   
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to metric Music b
+          Metric Music
         </h1>
         <PlayerForm {...{lowNote, base, freq0, shape}} />
         {!router.query.freq0 ? <></> : <Player {...{lowNote, freq0, base, shape}} /> }

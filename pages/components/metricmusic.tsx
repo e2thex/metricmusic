@@ -11,7 +11,6 @@ const noteBase = (ctx:AudioContext|null) => (freq0:number=55, base:number=10, ty
     if(!ctx) return;
     const l = length || 1000;
     var f = freq0*Math.pow(2,(note/base))
-    console.log({f, freq0, base})
     // var o = ctx.createOscillator();
     var o = oscillators[type](ctx)
     // o.type = type;
