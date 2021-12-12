@@ -112,6 +112,7 @@ const Key = (props:Props) => {
       onTouchCancel={keyUp}
       onTouchMove={keyUp}
       onMouseUp={keyUp}
+      onMouseDown={keyDown}
     >
       <span className="text-xl">{(note || 1).toString(player.base)}</span><span className="text-xs absolute bottom-0 right-0">{keyboardKey}</span>
     </div>
