@@ -65,11 +65,11 @@ const Key = (props:Props) => {
     stopPropagation: () => void,
   }
   const keyDown = (e?:KeyDownEvent) => {
+    if(e) e.preventDefault();
+    if (e) e.stopPropagation();
     if (tone) return;
     tone = player(note);
     tone?.start();
-    if(e) e.preventDefault();
-    if (e) e.stopPropagation();
     (ref.current || refmock).classList.add('shadow-inner');
     (ref.current || refmock).classList.add('text-gray-500');
     return false;
