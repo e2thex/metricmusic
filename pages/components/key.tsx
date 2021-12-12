@@ -110,6 +110,8 @@ const Key = (props:Props) => {
       onMouseDown={keyDown}
       onTouchStart={keyDown}
       onTouchEnd={keyDown}
+      onTouchCancel={keyUp}
+      onTouchMove={keyUp}
       onMouseUp={keyUp}
     >
       <span className="text-xl">{(note || 1).toString(player.base)}</span><span className="text-xs absolute bottom-0 right-0">{keyboardKey}</span>
