@@ -101,7 +101,7 @@ const Key = (props:Props) => {
     <div
       ref={ref}
       id = {keyboardKey}
-      className = {`border w-16 h-16 text-center ring-grey shadow-lg m-1 relative leading-16`}
+      className = {`touch-none select-none border w-16 h-16 text-center ring-grey shadow-lg m-1 relative leading-16`}
       onMouseDown={keyDown}
       onTouchStart={keyDown}
       onTouchEnd={keyDown}
