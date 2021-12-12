@@ -22,6 +22,7 @@ const TypeOption = (props:{type:MMTypes, shape?:MMTypes}) => {
 }
 const PlayerForm = (props:PlayerFormProps) => {
   const {base, freq0, lowNote, shape} = props;
+
   const [lBase, setLBase] = useState(null as null|string);
   const [lFreq0, setLFreq0] = useState(null as null|string);
   const [lLowNote, setLLowNote] = useState(null as null|string);
@@ -29,7 +30,8 @@ const PlayerForm = (props:PlayerFormProps) => {
   const router = useRouter();
   const onSubmit = (e:FormEvent<HTMLFormElement>)=> {
     e.preventDefault();
-    window.location.replace(`?base=${lBase||base}&freq0=${lFreq0||freq0}&shape=${lShape||shape}&lowNote=${lLowNote||(lowNote.toString(base))}`)
+    // window.location.replace(`?base=${lBase||base}&freq0=${lFreq0||freq0}&shape=${lShape||shape}&lowNote=${lLowNote||(lowNote.toString(base))}`)
+    router.push(`?base=${lBase||base}&freq0=${lFreq0||freq0}&shape=${lShape||shape}&lowNote=${lLowNote||(lowNote.toString(base))}`);
   }
   const types = ['sine' , 'square' , 'square2' , 'sawtooth' , 'triangle' , 'triangle2' , 'chiptune' , 'organ' , 'organ2' , 'organ3' , 'organ4' , 'organ5' , 'bass' ,'bass2' , 'bass3' , 'bass4' , 'brass' , 'brass2' , 'aah' , 'ooh' , 'eeh' , 'buzz' , 'buzz2' , 'dissonance'] as MMTypes[];
   return (
