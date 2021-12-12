@@ -31,7 +31,7 @@ const Player = (props: PlayerProps) => {
   return (
     <KeyboardContext.Provider value ={(p:KeyBoardKeyPresser) => pressers.set(p.letter, p)}>
       <PlayerContext.Provider value = {mm(audioCtx())(freq0, base, shape)}>
-        <div
+        <div className="w-full"
           tabIndex={-1} 
           onKeyDown={e => pressers.get(e.key)?.keyDown()}
           onKeyUp={e => pressers.get(e.key)?.keyUp()}
@@ -106,7 +106,7 @@ const Key = (props:Props) => {
     <div
       ref={ref}
       id = {keyboardKey}
-      className = {`touch-none select-none border w-16 h-16 text-center ring-grey shadow-lg m-1 relative leading-16`}
+      className = {`touch-none select-none border w-1/12 basis-1/12 h-16 text-center ring-grey shadow-lg m-1 relative leading-16`}
       onTouchStart={keyDown}
       onTouchEnd={keyDown}
       onTouchCancel={keyUp}
