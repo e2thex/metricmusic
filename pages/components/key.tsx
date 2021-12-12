@@ -60,7 +60,11 @@ const Key = (props:Props) => {
   let tone = undefined as OscillatorNode | undefined;
   const ref = useRef(null);
   const refmock = {classList:{ remove: (t:string) => {}, add: (t:string) => {}}};
-  const keyDown = (e?:Event) => {
+  type KeyDownEvent = {
+    preventDefault: () => void,
+    stopPropagation: () => void,
+  }
+  const keyDown = (e?:KeyDownEvent) => {
     if (tone) return;
     tone = player(note);
     tone?.start();
@@ -68,6 +72,7 @@ const Key = (props:Props) => {
     if (e) e.stopPropagation();
     (ref.current || refmock).classList.add('shadow-inner');
     (ref.current || refmock).classList.add('text-gray-500');
+    return false;
   }
   const keyUp = () => {
     tone?.stop();
