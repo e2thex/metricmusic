@@ -110,7 +110,6 @@ const Key = (props:Props) => {
       onTouchStart={keyDown}
       onTouchEnd={keyUp}
       onTouchCancel={keyUp}
-      onTouchMove={keyUp}
       onMouseUp={keyUp}
       onMouseDown={keyDown}
     >
