@@ -9,6 +9,7 @@ import Key, { Player } from './components/key';
 import { useRouter } from 'next/router';
 import { prependOnceListener } from 'process';
 import { useParams} from 'react-router';
+import reactGA from 'react-ga4'
 type PlayerFormProps = {
   base:number,
   freq0: number,
@@ -27,6 +28,7 @@ const PlayerForm = (props:PlayerFormProps) => {
   const [lFreq0, setLFreq0] = useState(null as null|string);
   const [lLowNote, setLLowNote] = useState(null as null|string);
   const [lShape, setLShape] = useState(null as null| string);
+
   const router = useRouter();
   const onSubmit = (e:FormEvent<HTMLFormElement>)=> {
     e.preventDefault();
@@ -51,6 +53,8 @@ const PlayerForm = (props:PlayerFormProps) => {
   )
 }
 const Home: NextPage = () => {
+  reactGA.initialize('G-HV4YEMW09L');
+  reactGA.send('pageview');
   const router = useRouter();
   const [base, setBase] = useState(12);
   if (router.query.base) {
