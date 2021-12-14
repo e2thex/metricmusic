@@ -108,7 +108,7 @@ const Key = (props:Props) => {
       id = {keyboardKey}
       className = {`touch-none select-none border w-1/12 basis-1/12 h-16 text-center ring-grey shadow-lg m-1 relative leading-16`}
       onTouchStart={keyDown}
-      onTouchEnd={keyDown}
+      onTouchEnd={keyUp}
       onTouchCancel={keyUp}
       onTouchMove={keyUp}
       onMouseUp={keyUp}
